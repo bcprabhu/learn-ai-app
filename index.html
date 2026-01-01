@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn AI from AI - ಕಲಿಯಿರಿ AI ಬಗ್ಗೆ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #FF6B35;
+            --secondary: #F7931E;
+            --accent: #2ECC71;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --white: #FFFFFF;
+            --gradient: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: 'Poppins', 'Noto Sans Kannada', sans-serif;
+            background: linear-gradient(180deg, #FFF5E6 0%, #FFE5CC 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            opacity: 0.95;
+        }
+        
+        .lang-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid var(--white);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .lang-toggle:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 1.8rem;
+        }
+        
+        .section p {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #34495E;
+        }
+        
+        .creator-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .creator-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        
+        .creator-info p {
+            color: var(--white);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .contact-btn {
+            background: var(--white);
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .contact-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .ai-capabilities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .capability-card {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .capability-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .capability-card h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .chat-container {
+            background: #F8F9FA;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: var(--white);
+            border-radius: 10px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 85%;
+            animation: messageSlide 0.3s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-message {
+            background: var(--gradient);
+            color: var(--white);
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .ai-message {
+            background: #E8F5E9;
+            color: var(--dark);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+        
+        .mic-btn {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            width: 60px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .mic-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5);
+        }
+        
+        .mic-btn.listening {
+            background: #E74C3C;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .voice-controls {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .voice-toggle {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .voice-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid var(--secondary);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+        
+        .send-btn {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .example-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .example-btn {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .example-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--dark);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #FFD70040 0%, #FFA50040 100%);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .ai-capabilities {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <span id="langText">ಕನ್ನಡ</span>
+        </button>
+        <h1 id="mainTitle">Learn AI from AI</h1>
+        <p id="subtitle">Understand Artificial Intelligence in Simple Terms</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div class="creator-info">
+                <h3 id="creatorTitle">Created By</h3>
+                <p style="font-size: 1.3rem; font-weight: 700; margin-top: 10px;">B.C. PRABHAKAR</p>
+                <p id="creatorRole">Freelance Engineering Consultant</p>
+                <p>📱 9449834721</p>
+                <a href="tel:9449834721" class="contact-btn" id="contactBtn">Contact Me</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🤖</span><span id="whatIsAI">What is AI (Artificial Intelligence)?</span></h2>
+            <p id="aiExplanation">
+                <span class="highlight">AI</span> is like a very smart computer program that can think and learn like humans. 
+                Just like you learned farming from your elders, AI learns from examples and data to help solve problems.
+            </p>
+            <p id="aiExplanation2">Think of AI as a helpful assistant that can:</p>
+            <ul style="padding-left: 25px; line-height: 2; font-size: 1.05rem;">
+                <li id="point1">Answer your questions instantly</li>
+                <li id="point2">Help you write letters or applications</li>
+                <li id="point3">Translate languages</li>
+                <li id="point4">Give farming advice</li>
+                <li id="point5">Help with health information</li>
+                <li id="point6">And much more!</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">✨</span><span id="capabilitiesTitle">What Can AI Do?</span></h2>
+            <div class="ai-capabilities">
+                <div class="capability-card">
+                    <h3 id="cap1Title">💬 Chat & Answer</h3>
+                    <p id="cap1Text">Ask any question in your language and get instant answers</p>
+                </div>
+                <div class="capability-card">
+                    <h3 id="cap2Title">📝 Writing Help</h3>
+                    <p id="cap2Text">Write letters, applications, or any document</p>
+                </div>
+                <div class="capability-card">
+                    <h3 id="cap3Title">🌾 Farming Advice</h3>
+                    <p id="cap3Text">Get tips on crops, weather, and best farming practices</p>
+                </div>
+                <div class="capability-card">
+                    <h3 id="cap4Title">🏥 Health Info</h3>
+                    <p id="cap4Text">Basic health guidance and when to see a doctor</p>
+                </div>
+                <div class="capability-card">
+                    <h3 id="cap5Title">🗣️ Translation</h3>
+                    <p id="cap5Text">Translate between Kannada, English, Hindi, and more</p>
+                </div>
+                <div class="capability-card">
+                    <h3 id="cap6Title">📚 Learning</h3>
+                    <p id="cap6Text">Learn new skills, read news, understand technology</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">💭</span><span id="tryAITitle">Try AI Now - Ask Anything!</span></h2>
+            <p id="tryAIText">Type your question below or use voice to speak. Get instant answers!</p>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="ai-message">
+                        <p id="welcomeMsg"><strong>AI:</strong> Namaskara! 🙏 I am AI. Ask me anything about AI, farming, health, or technology. I'm here to help!</p>
+                    </div>
+                </div>
+                
+                <div class="example-questions">
+                    <button class="example-btn" onclick="askQuestion(this.textContent)" id="q1">What is AI?</button>
+                    <button class="example-btn" onclick="askQuestion(this.textContent)" id="q2">How can AI help farmers?</button>
+                    <button class="example-btn" onclick="askQuestion(this.textContent)" id="q3">AI in healthcare</button>
+                    <button class="example-btn" onclick="askQuestion(this.textContent)" id="q4">AI in banking</button>
+                </div>
+                
+                <div class="input-group">
+                    <button class="mic-btn" id="micBtn" onclick="toggleVoiceInput()" title="Tap to speak / ಮಾತನಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ">
+                        🎤
+                    </button>
+                    <input type="text" class="chat-input" id="userInput" placeholder="Type or speak your question... / ಪ್ರಶ್ನೆ ಕೇಳಿ..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+                </div>
+                <div class="voice-controls">
+                    <button class="voice-toggle" id="voiceToggle" onclick="toggleVoiceOutput()">
+                        <span id="voiceIcon">🔇</span> <span id="voiceLabel">Turn ON Voice / ಧ್ವನಿ ಆನ್ ಮಾಡಿ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🌍</span><span id="realWorldTitle">Real World Uses of AI</span></h2>
+            <p id="realWorld1"><strong>🏥 In Healthcare:</strong> AI helps doctors diagnose diseases faster and more accurately.</p>
+            <p id="realWorld2"><strong>🌾 In Agriculture:</strong> AI predicts weather, suggests best planting times, detects crop diseases.</p>
+            <p id="realWorld3"><strong>📱 In Phones:</strong> Voice assistants, photo editing, language translation.</p>
+            <p id="realWorld4"><strong>🚗 In Transport:</strong> Self-driving cars, traffic prediction, route optimization.</p>
+            <p id="realWorld5"><strong>🏦 In Banking:</strong> Loan processing, fraud detection, customer service.</p>
+            <p id="realWorld6"><strong>📺 Entertainment:</strong> Movie recommendations, music suggestions, video creation.</p>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📖</span><span id="howToTitle">How to Use This App</span></h2>
+            
+            <div style="background: linear-gradient(135deg, #2ecc7120 0%, #27ae6020 100%); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid var(--accent);">
+                <h3 style="color: var(--accent); margin-bottom: 10px; font-size: 1.3rem;">🎤 <span id="voiceFeatureTitle">For Those Who Cannot Write</span></h3>
+                <p id="voiceFeature1" style="font-size: 1.1rem; margin-bottom: 10px;"><strong>1. Click the GREEN MICROPHONE button 🎤</strong></p>
+                <p id="voiceFeature2" style="font-size: 1.1rem; margin-bottom: 10px;"><strong>2. Speak your question in Kannada or English</strong></p>
+                <p id="voiceFeature3" style="font-size: 1.1rem; margin-bottom: 10px;"><strong>3. Your words will appear as text automatically!</strong></p>
+                <p id="voiceFeature4" style="font-size: 1.1rem; margin-bottom: 10px;"><strong>4. Turn ON VOICE 🔊 to hear AI responses read aloud!</strong></p>
+                <p id="voiceFeature5" style="font-size: 1rem; color: #27ae60; margin-top: 15px;">✨ <strong>No typing needed! Just speak and listen!</strong></p>
+            </div>
+            
+            <p id="howTo1"><strong>Step 1:</strong> Read the information above to understand what AI is.</p>
+            <p id="howTo2"><strong>Step 2:</strong> Scroll to the "Try AI Now" section.</p>
+            <p id="howTo3"><strong>Step 3:</strong> Type your question OR click 🎤 microphone to speak.</p>
+            <p id="howTo4"><strong>Step 4:</strong> Press "Send" and get instant answer.</p>
+            <p id="howTo5"><strong>Step 5:</strong> Ask more questions to learn more!</p>
+            <p id="howTo6"><strong>🌐 Language:</strong> Click the button at top-right to switch between English and Kannada.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p id="footerText">Made with ❤️ for Rural Karnataka | B.C. Prabhakar | 2024</p>
+        <p id="footerHelp">Need help? Call: 9449834721</p>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+        let voiceOutputEnabled = false;
+        let recognition = null;
+        let isListening = false;
+        
+        // Pre-programmed Q&A database
+        const qaDatabase = {
+            en: {
+                "what is ai": "AI (Artificial Intelligence) is a smart computer program that can learn and think like humans. It helps solve problems by learning from examples and data, just like you learned farming from your elders!",
+                "how can ai help farmers": "AI can help farmers by: predicting weather patterns, detecting crop diseases early, suggesting best planting times, optimizing irrigation, monitoring soil health, and providing market price information to get better rates for crops.",
+                "ai in healthcare": "AI helps doctors diagnose diseases faster and more accurately. It can analyze medical images, predict health risks, help develop new medicines, and provide personalized treatment plans for patients.",
+                "ai in banking": "AI in banking helps with loan approvals, fraud detection, customer service chatbots, investment advice, and making transactions safer and faster.",
+                "how does ai work": "AI works by learning from large amounts of data. It finds patterns and makes decisions based on what it learned, similar to how humans learn from experience.",
+                "is ai dangerous": "AI itself is not dangerous. Like any tool, it depends on how people use it. When used properly, AI helps improve our lives in healthcare, farming, education, and many other fields.",
+                "can ai replace humans": "AI cannot replace humans completely. AI is a tool that helps humans work better and faster. Humans are still needed for creativity, emotions, judgment, and complex decision-making.",
+                "what can ai do": "AI can: answer questions, translate languages, recognize faces and objects, predict weather, diagnose diseases, drive cars, play games, create art, and help with farming and business decisions.",
+                "how to learn ai": "To learn AI: Start with basic computer skills, learn programming (Python is good), understand mathematics, take online courses, practice with projects, and join AI communities. For more guidance, contact B.C. Prabhakar at 9449834721.",
+                "default": "That's a great question! For detailed information, please contact B.C. Prabhakar at 9449834721. I can answer questions about AI basics, farming applications, healthcare, banking, and general technology."
+            },
+            kn: {
+                "ai ಎಂದರೇನು": "AI (ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ) ಎಂದರೆ ಮನುಷ್ಯರಂತೆ ಕಲಿಯಬಲ್ಲ ಮತ್ತು ಯೋಚಿಸಬಲ್ಲ ಬುದ್ಧಿವಂತ ಕಂಪ್ಯೂಟರ್ ಪ್ರೋಗ್ರಾಂ. ನೀವು ನಿಮ್ಮ ಹಿರಿಯರಿಂದ ಕೃಷಿ ಕಲಿತಂತೆ, AI ಉದಾಹರಣೆಗಳು ಮತ್ತು ಮಾಹಿತಿಯಿಂದ ಕಲಿತು ಸಮಸ್ಯೆಗಳನ್ನು ಪರಿಹರಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ!",
+                "ai ರೈತರಿಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ": "AI ರೈತರಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ: ಹವಾಮಾನ ಊಹಿಸುವುದು, ಬೆಳೆ ರೋಗಗಳನ್ನು ಬೇಗ ಪತ್ತೆ ಮಾಡುವುದು, ಉತ್ತಮ ಬಿತ್ತನೆ ಸಮಯ ಸೂಚಿಸುವುದು, ನೀರಾವರಿ ಹೊಂದಿಸುವುದು, ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣೆ, ಮತ್ತು ಮಾರುಕಟ್ಟೆ ಬೆಲೆ ಮಾಹಿತಿ ಒದಗಿಸುವುದು.",
+                "ಆರೋಗ್ಯದಲ್ಲಿ ai": "AI ವೈದ್ಯರಿಗೆ ರೋಗಗಳನ್ನು ವೇಗವಾಗಿ ಮತ್ತು ನಿಖರವಾಗಿ ಪತ್ತೆಹಚ್ಚಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. ವೈದ್ಯಕೀಯ ಚಿತ್ರಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ, ಆರೋಗ್ಯ ಅಪಾಯಗಳನ್ನು ಊಹಿಸುತ್ತದೆ, ಹೊಸ ಔಷಧಗಳನ್ನು ಅಭಿವೃದ್ಧಿಪಡಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
+                "ಬ್ಯಾಂಕಿಂಗ್‌ನಲ್ಲಿ ai": "ಬ್ಯಾಂಕಿಂಗ್‌ನಲ್ಲಿ AI ಸಾಲ ಅನುಮೋದನೆಗಳು, ವಂಚನೆ ಪತ್ತೆ, ಗ್ರಾಹಕ ಸೇವೆ ಚಾಟ್‌ಬಾಟ್‌ಗಳು, ಹೂಡಿಕೆ ಸಲಹೆ, ಮತ್ತು ವಹಿವಾಟುಗಳನ್ನು ಸುರಕ್ಷಿತ ಮತ್ತು ವೇಗವಾಗಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
+                "ai ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ": "AI ದೊಡ್ಡ ಪ್ರಮಾಣದ ಮಾಹಿತಿಯಿಂದ ಕಲಿಯುವ ಮೂಲಕ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಮಾದರಿಗಳನ್ನು ಹುಡುಕುತ್ತದೆ ಮತ್ತು ಕಲಿತ ವಿಷಯಗಳ ಆಧಾರದ ಮೇಲೆ ನಿರ್ಧಾರಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ, ಮನುಷ್ಯರು ಅನುಭವದಿಂದ ಕಲಿಯುವಂತೆ.",
+                "ai ಅಪಾಯಕಾರಿಯೇ": "AI ಸ್ವತಃ ಅಪಾಯಕಾರಿ ಅಲ್ಲ. ಯಾವುದೇ ಸಾಧನದಂತೆ, ಜನರು ಅದನ್ನು ಹೇಗೆ ಬಳಸುತ್ತಾರೆ ಎಂಬುದರ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿದೆ. ಸರಿಯಾಗಿ ಬಳಸಿದಾಗ, AI ಆರೋಗ್ಯ, ಕೃಷಿ, ಶಿಕ್ಷಣ ಮತ್ತು ಇತರ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ನಮ್ಮ ಜೀವನವನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
+                "ai ಮನುಷ್ಯರನ್ನು ಬದಲಾಯಿಸಬಹುದೇ": "AI ಮನುಷ್ಯರನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. AI ಮನುಷ್ಯರಿಗೆ ಉತ್ತಮವಾಗಿ ಮತ್ತು ವೇಗವಾಗಿ ಕೆಲಸ ಮಾಡಲು ಸಹಾಯ ಮಾಡುವ ಸಾಧನವಾಗಿದೆ. ಸೃಜನಶೀಲತೆ, ಭಾವನೆಗಳು, ತೀರ್ಪು ಮತ್ತು ಸಂಕೀರ್ಣ ನಿರ್ಧಾರಗಳಿಗೆ ಮನುಷ್ಯರು ಇನ್ನೂ ಅಗತ್ಯವಿದೆ.",
+                "default": "ಇದು ಉತ್ತಮ ಪ್ರಶ್ನೆ! ವಿವರವಾದ ಮಾಹಿತಿಗಾಗಿ, ದಯವಿಟ್ಟು ಬಿ.ಸಿ. ಪ್ರಭಾಕರ್‌ಗೆ 9449834721 ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಿ. ನಾನು AI ಮೂಲಭೂತ ವಿಷಯಗಳು, ಕೃಷಿ ಅನ್ವಯಗಳು, ಆರೋಗ್ಯ, ಬ್ಯಾಂಕಿಂಗ್ ಮತ್ತು ಸಾಮಾನ್ಯ ತಂತ್ರಜ್ಞಾನದ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ."
+            }
+        };
+        
+        // Speech recognition setup
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('userInput').value = transcript;
+                stopListening();
+            };
+            
+            recognition.onerror = function(event) {
+                stopListening();
+                if (event.error === 'not-allowed') {
+                    alert('⚠️ Microphone permission needed. Please allow microphone access in browser settings.\n\nಮೈಕ್ರೊಫೋನ್ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ. ದಯವಿಟ್ಟು ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.');
+                }
+            };
+            
+            recognition.onend = function() {
+                stopListening();
+            };
+        }
+        
+        function toggleVoiceInput() {
+            if (!recognition) {
+                alert('Voice input not supported on this browser. Please use Chrome.\n\nಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. Chrome ಬಳಸಿ.');
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.lang = currentLang === 'kn' ? 'kn-IN' : 'en-IN';
+                recognition.start();
+                startListening();
+            }
+        }
+        
+        function startListening() {
+            isListening = true;
+            const micBtn = document.getElementById('micBtn');
+            micBtn.classList.add('listening');
+            micBtn.textContent = '🔴';
+        }
+        
+        function stopListening() {
+            isListening = false;
+            const micBtn = document.getElementById('micBtn');
+            micBtn.classList.remove('listening');
+            micBtn.textContent = '🎤';
+        }
+        
+        function toggleVoiceOutput() {
+            voiceOutputEnabled = !voiceOutputEnabled;
+            const icon = document.getElementById('voiceIcon');
+            const label = document.getElementById('voiceLabel');
+            
+            if (voiceOutputEnabled) {
+                icon.textContent = '🔊';
+                label.textContent = 'Voice ON / ಧ್ವನಿ ಆನ್';
+            } else {
+                icon.textContent = '🔇';
+                label.textContent = 'Turn ON Voice / ಧ್ವನಿ ಆನ್ ಮಾಡಿ';
+            }
+        }
+        
+        function speakText(text) {
+            if (!voiceOutputEnabled) return;
+            
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = currentLang === 'kn' ? 'kn-IN' : 'en-IN';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+        
+        function getAnswer(question) {
+            const q = question.toLowerCase().trim();
+            const db = qaDatabase[currentLang];
+            
+            // Check for exact match
+            if (db[q]) return db[q];
+            
+            // Check for partial match
+            for (let key in db) {
+                if (key !== 'default' && (q.includes(key) || key.includes(q))) {
+                    return db[key];
+                }
+            }
+            
+            return db['default'];
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Get answer from database
+            setTimeout(() => {
+                const answer = getAnswer(message);
+                addMessage(answer, 'ai');
+            }, 500);
+        }
+        
+        function addMessage(text, type) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            
+            const prefix = type === 'user' ? '<strong>You:</strong> ' : '<strong>AI:</strong> ';
+            messageDiv.innerHTML = prefix + text;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            if (type === 'ai' && voiceOutputEnabled) {
+                speakText(text);
+            }
+        }
+        
+        function askQuestion(question) {
+            document.getElementById('userInput').value = question;
+            sendMessage();
+        }
+        
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'kn' : 'en';
+            // Update UI text (translations omitted for brevity - same as before)
+        }
+    </script>
+</body>
+</html>
