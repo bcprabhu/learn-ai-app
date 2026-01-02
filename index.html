@@ -516,37 +516,108 @@
         <p id="footerHelp">Need help? Call: 9449834721</p>
     </div>
 
-    <script>
+  <script>
         let currentLang = 'en';
         let voiceOutputEnabled = false;
         let recognition = null;
         let isListening = false;
         
-        // Pre-programmed Q&A database
+        // Improved Q&A database with flexible matching
         const qaDatabase = {
-            en: {
-                "what is ai": "AI (Artificial Intelligence) is a smart computer program that can learn and think like humans. It helps solve problems by learning from examples and data, just like you learned farming from your elders!",
-                "how can ai help farmers": "AI can help farmers by: predicting weather patterns, detecting crop diseases early, suggesting best planting times, optimizing irrigation, monitoring soil health, and providing market price information to get better rates for crops.",
-                "ai in healthcare": "AI helps doctors diagnose diseases faster and more accurately. It can analyze medical images, predict health risks, help develop new medicines, and provide personalized treatment plans for patients.",
-                "ai in banking": "AI in banking helps with loan approvals, fraud detection, customer service chatbots, investment advice, and making transactions safer and faster.",
-                "how does ai work": "AI works by learning from large amounts of data. It finds patterns and makes decisions based on what it learned, similar to how humans learn from experience.",
-                "is ai dangerous": "AI itself is not dangerous. Like any tool, it depends on how people use it. When used properly, AI helps improve our lives in healthcare, farming, education, and many other fields.",
-                "can ai replace humans": "AI cannot replace humans completely. AI is a tool that helps humans work better and faster. Humans are still needed for creativity, emotions, judgment, and complex decision-making.",
-                "what can ai do": "AI can: answer questions, translate languages, recognize faces and objects, predict weather, diagnose diseases, drive cars, play games, create art, and help with farming and business decisions.",
-                "how to learn ai": "To learn AI: Start with basic computer skills, learn programming (Python is good), understand mathematics, take online courses, practice with projects, and join AI communities. For more guidance, contact B.C. Prabhakar at 9449834721.",
-                "default": "That's a great question! For detailed information, please contact B.C. Prabhakar at 9449834721. I can answer questions about AI basics, farming applications, healthcare, banking, and general technology."
-            },
-            kn: {
-                "ai ಎಂದರೇನು": "AI (ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ) ಎಂದರೆ ಮನುಷ್ಯರಂತೆ ಕಲಿಯಬಲ್ಲ ಮತ್ತು ಯೋಚಿಸಬಲ್ಲ ಬುದ್ಧಿವಂತ ಕಂಪ್ಯೂಟರ್ ಪ್ರೋಗ್ರಾಂ. ನೀವು ನಿಮ್ಮ ಹಿರಿಯರಿಂದ ಕೃಷಿ ಕಲಿತಂತೆ, AI ಉದಾಹರಣೆಗಳು ಮತ್ತು ಮಾಹಿತಿಯಿಂದ ಕಲಿತು ಸಮಸ್ಯೆಗಳನ್ನು ಪರಿಹರಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ!",
-                "ai ರೈತರಿಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ": "AI ರೈತರಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ: ಹವಾಮಾನ ಊಹಿಸುವುದು, ಬೆಳೆ ರೋಗಗಳನ್ನು ಬೇಗ ಪತ್ತೆ ಮಾಡುವುದು, ಉತ್ತಮ ಬಿತ್ತನೆ ಸಮಯ ಸೂಚಿಸುವುದು, ನೀರಾವರಿ ಹೊಂದಿಸುವುದು, ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣೆ, ಮತ್ತು ಮಾರುಕಟ್ಟೆ ಬೆಲೆ ಮಾಹಿತಿ ಒದಗಿಸುವುದು.",
-                "ಆರೋಗ್ಯದಲ್ಲಿ ai": "AI ವೈದ್ಯರಿಗೆ ರೋಗಗಳನ್ನು ವೇಗವಾಗಿ ಮತ್ತು ನಿಖರವಾಗಿ ಪತ್ತೆಹಚ್ಚಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. ವೈದ್ಯಕೀಯ ಚಿತ್ರಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ, ಆರೋಗ್ಯ ಅಪಾಯಗಳನ್ನು ಊಹಿಸುತ್ತದೆ, ಹೊಸ ಔಷಧಗಳನ್ನು ಅಭಿವೃದ್ಧಿಪಡಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
-                "ಬ್ಯಾಂಕಿಂಗ್‌ನಲ್ಲಿ ai": "ಬ್ಯಾಂಕಿಂಗ್‌ನಲ್ಲಿ AI ಸಾಲ ಅನುಮೋದನೆಗಳು, ವಂಚನೆ ಪತ್ತೆ, ಗ್ರಾಹಕ ಸೇವೆ ಚಾಟ್‌ಬಾಟ್‌ಗಳು, ಹೂಡಿಕೆ ಸಲಹೆ, ಮತ್ತು ವಹಿವಾಟುಗಳನ್ನು ಸುರಕ್ಷಿತ ಮತ್ತು ವೇಗವಾಗಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
-                "ai ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ": "AI ದೊಡ್ಡ ಪ್ರಮಾಣದ ಮಾಹಿತಿಯಿಂದ ಕಲಿಯುವ ಮೂಲಕ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಮಾದರಿಗಳನ್ನು ಹುಡುಕುತ್ತದೆ ಮತ್ತು ಕಲಿತ ವಿಷಯಗಳ ಆಧಾರದ ಮೇಲೆ ನಿರ್ಧಾರಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ, ಮನುಷ್ಯರು ಅನುಭವದಿಂದ ಕಲಿಯುವಂತೆ.",
-                "ai ಅಪಾಯಕಾರಿಯೇ": "AI ಸ್ವತಃ ಅಪಾಯಕಾರಿ ಅಲ್ಲ. ಯಾವುದೇ ಸಾಧನದಂತೆ, ಜನರು ಅದನ್ನು ಹೇಗೆ ಬಳಸುತ್ತಾರೆ ಎಂಬುದರ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿದೆ. ಸರಿಯಾಗಿ ಬಳಸಿದಾಗ, AI ಆರೋಗ್ಯ, ಕೃಷಿ, ಶಿಕ್ಷಣ ಮತ್ತು ಇತರ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ನಮ್ಮ ಜೀವನವನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
-                "ai ಮನುಷ್ಯರನ್ನು ಬದಲಾಯಿಸಬಹುದೇ": "AI ಮನುಷ್ಯರನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. AI ಮನುಷ್ಯರಿಗೆ ಉತ್ತಮವಾಗಿ ಮತ್ತು ವೇಗವಾಗಿ ಕೆಲಸ ಮಾಡಲು ಸಹಾಯ ಮಾಡುವ ಸಾಧನವಾಗಿದೆ. ಸೃಜನಶೀಲತೆ, ಭಾವನೆಗಳು, ತೀರ್ಪು ಮತ್ತು ಸಂಕೀರ್ಣ ನಿರ್ಧಾರಗಳಿಗೆ ಮನುಷ್ಯರು ಇನ್ನೂ ಅಗತ್ಯವಿದೆ.",
-                "default": "ಇದು ಉತ್ತಮ ಪ್ರಶ್ನೆ! ವಿವರವಾದ ಮಾಹಿತಿಗಾಗಿ, ದಯವಿಟ್ಟು ಬಿ.ಸಿ. ಪ್ರಭಾಕರ್‌ಗೆ 9449834721 ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಿ. ನಾನು AI ಮೂಲಭೂತ ವಿಷಯಗಳು, ಕೃಷಿ ಅನ್ವಯಗಳು, ಆರೋಗ್ಯ, ಬ್ಯಾಂಕಿಂಗ್ ಮತ್ತು ಸಾಮಾನ್ಯ ತಂತ್ರಜ್ಞಾನದ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ."
-            }
+            en: [
+                {
+                    keywords: ["what is ai", "define ai", "explain ai", "tell me about ai", "ai meaning"],
+                    answer: "AI (Artificial Intelligence) is a smart computer program that can learn and think like humans. It helps solve problems by learning from examples and data, just like you learned farming from your elders!"
+                },
+                {
+                    keywords: ["farmer", "farming", "agriculture", "crop", "help farmer"],
+                    answer: "AI can help farmers by: predicting weather patterns, detecting crop diseases early, suggesting best planting times, optimizing irrigation, monitoring soil health, and providing market price information to get better rates for crops."
+                },
+                {
+                    keywords: ["health", "healthcare", "medical", "doctor", "hospital", "disease"],
+                    answer: "AI helps doctors diagnose diseases faster and more accurately. It can analyze medical images, predict health risks, help develop new medicines, and provide personalized treatment plans for patients."
+                },
+                {
+                    keywords: ["bank", "banking", "loan", "money", "finance"],
+                    answer: "AI in banking helps with loan approvals, fraud detection, customer service chatbots, investment advice, and making transactions safer and faster."
+                },
+                {
+                    keywords: ["how does ai work", "how ai works", "ai working"],
+                    answer: "AI works by learning from large amounts of data. It finds patterns and makes decisions based on what it learned, similar to how humans learn from experience."
+                },
+                {
+                    keywords: ["dangerous", "harmful", "bad", "scary", "risk"],
+                    answer: "AI itself is not dangerous. Like any tool, it depends on how people use it. When used properly, AI helps improve our lives in healthcare, farming, education, and many other fields."
+                },
+                {
+                    keywords: ["replace human", "replace people", "take jobs", "humans replaced"],
+                    answer: "AI cannot replace humans completely. AI is a tool that helps humans work better and faster. Humans are still needed for creativity, emotions, judgment, and complex decision-making."
+                },
+                {
+                    keywords: ["what can ai do", "ai capabilities", "ai uses", "ai applications"],
+                    answer: "AI can: answer questions, translate languages, recognize faces and objects, predict weather, diagnose diseases, drive cars, play games, create art, and help with farming and business decisions."
+                },
+                {
+                    keywords: ["learn ai", "study ai", "ai course", "ai education"],
+                    answer: "To learn AI: Start with basic computer skills, learn programming (Python is good), understand mathematics, take online courses, practice with projects, and join AI communities. For more guidance, contact B.C. Prabhakar at 9449834721."
+                },
+                {
+                    keywords: ["chatgpt", "chat gpt", "openai", "gpt"],
+                    answer: "ChatGPT is a popular AI chatbot made by OpenAI. It can answer questions, write text, help with coding, and have conversations. It's one example of how AI can help people with various tasks."
+                },
+                {
+                    keywords: ["google", "alexa", "siri", "voice assistant"],
+                    answer: "Voice assistants like Google Assistant, Alexa, and Siri use AI to understand your voice, answer questions, set reminders, play music, and control smart home devices. They make technology easier to use!"
+                },
+                {
+                    keywords: ["phone", "mobile", "smartphone"],
+                    answer: "AI in phones helps with: voice assistants, photo enhancement, face unlock, language translation, predictive text, smart battery management, and personalized app recommendations."
+                },
+                {
+                    keywords: ["future", "future of ai", "ai future"],
+                    answer: "The future of AI is exciting! AI will help solve climate change, cure diseases, improve education, make farming more efficient, and create new technologies we can't imagine yet. But humans will always be important!"
+                },
+                {
+                    keywords: ["machine learning", "deep learning", "ml"],
+                    answer: "Machine Learning is a type of AI where computers learn from data without being explicitly programmed. Deep Learning is an advanced form that uses neural networks to recognize complex patterns, like in images and speech."
+                }
+            ],
+            kn: [
+                {
+                    keywords: ["ai ಎಂದರೇನು", "ai ಅರ್ಥ", "ai ಬಗ್ಗೆ", "ai ವಿವರಿಸಿ"],
+                    answer: "AI (ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ) ಎಂದರೆ ಮನುಷ್ಯರಂತೆ ಕಲಿಯಬಲ್ಲ ಮತ್ತು ಯೋಚಿಸಬಲ್ಲ ಬುದ್ಧಿವಂತ ಕಂಪ್ಯೂಟರ್ ಪ್ರೋಗ್ರಾಂ. ನೀವು ನಿಮ್ಮ ಹಿರಿಯರಿಂದ ಕೃಷಿ ಕಲಿತಂತೆ, AI ಉದಾಹರಣೆಗಳು ಮತ್ತು ಮಾಹಿತಿಯಿಂದ ಕಲಿತು ಸಮಸ್ಯೆಗಳನ್ನು ಪರಿಹರಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ!"
+                },
+                {
+                    keywords: ["ರೈತ", "ಕೃಷಿ", "ರೈತರಿಗೆ", "ಬೆಳೆ"],
+                    answer: "AI ರೈತರಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ: ಹವಾಮಾನ ಊಹಿಸುವುದು, ಬೆಳೆ ರೋಗಗಳನ್ನು ಬೇಗ ಪತ್ತೆ ಮಾಡುವುದು, ಉತ್ತಮ ಬಿತ್ತನೆ ಸಮಯ ಸೂಚಿಸುವುದು, ನೀರಾವರಿ ಹೊಂದಿಸುವುದು, ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣೆ, ಮತ್ತು ಮಾರುಕಟ್ಟೆ ಬೆಲೆ ಮಾಹಿತಿ ಒದಗಿಸುವುದು."
+                },
+                {
+                    keywords: ["ಆರೋಗ್ಯ", "ವೈದ್ಯಕೀಯ", "ವೈದ್ಯ", "ಆಸ್ಪತ್ರೆ", "ರೋಗ"],
+                    answer: "AI ವೈದ್ಯರಿಗೆ ರೋಗಗಳನ್ನು ವೇಗವಾಗಿ ಮತ್ತು ನಿಖರವಾಗಿ ಪತ್ತೆಹಚ್ಚಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. ವೈದ್ಯಕೀಯ ಚಿತ್ರಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ, ಆರೋಗ್ಯ ಅಪಾಯಗಳನ್ನು ಊಹಿಸುತ್ತದೆ, ಹೊಸ ಔಷಧಗಳನ್ನು ಅಭಿವೃದ್ಧಿಪಡಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ."
+                },
+                {
+                    keywords: ["ಬ್ಯಾಂಕ್", "ಸಾಲ", "ಹಣ", "ಹಣಕಾಸು"],
+                    answer: "ಬ್ಯಾಂಕಿಂಗ್‌ನಲ್ಲಿ AI ಸಾಲ ಅನುಮೋದನೆಗಳು, ವಂಚನೆ ಪತ್ತೆ, ಗ್ರಾಹಕ ಸೇವೆ ಚಾಟ್‌ಬಾಟ್‌ಗಳು, ಹೂಡಿಕೆ ಸಲಹೆ, ಮತ್ತು ವಹಿವಾಟುಗಳನ್ನು ಸುರಕ್ಷಿತ ಮತ್ತು ವೇಗವಾಗಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ."
+                }
+            ]
         };
+        
+        function findAnswer(question) {
+            const q = question.toLowerCase().trim();
+            const db = qaDatabase[currentLang];
+            
+            // Try to find matching keywords
+            for (let item of db) {
+                for (let keyword of item.keywords) {
+                    if (q.includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(q)) {
+                        return item.answer;
+                    }
+                }
+            }
+            
+            // Default response
+            return "That's a great question! For detailed information, please contact B.C. Prabhakar at 9449834721. I can answer questions about AI basics, farming applications, healthcare, banking, and general technology.";
+        }
         
         // Speech recognition setup
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -564,7 +635,7 @@
             recognition.onerror = function(event) {
                 stopListening();
                 if (event.error === 'not-allowed') {
-                    alert('⚠️ Microphone permission needed. Please allow microphone access in browser settings.\n\nಮೈಕ್ರೊಫೋನ್ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ. ದಯವಿಟ್ಟು ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.');
+                    alert('⚠️ Microphone permission needed. Please allow microphone access in browser settings.');
                 }
             };
             
@@ -575,7 +646,7 @@
         
         function toggleVoiceInput() {
             if (!recognition) {
-                alert('Voice input not supported on this browser. Please use Chrome.\n\nಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. Chrome ಬಳಸಿ.');
+                alert('Voice input not supported on this browser. Please use Chrome.');
                 return;
             }
             
@@ -628,23 +699,6 @@
             }
         }
         
-        function getAnswer(question) {
-            const q = question.toLowerCase().trim();
-            const db = qaDatabase[currentLang];
-            
-            // Check for exact match
-            if (db[q]) return db[q];
-            
-            // Check for partial match
-            for (let key in db) {
-                if (key !== 'default' && (q.includes(key) || key.includes(q))) {
-                    return db[key];
-                }
-            }
-            
-            return db['default'];
-        }
-        
         function sendMessage() {
             const input = document.getElementById('userInput');
             const message = input.value.trim();
@@ -654,9 +708,8 @@
             addMessage(message, 'user');
             input.value = '';
             
-            // Get answer from database
             setTimeout(() => {
-                const answer = getAnswer(message);
+                const answer = findAnswer(message);
                 addMessage(answer, 'ai');
             }, 500);
         }
@@ -684,8 +737,8 @@
         
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'kn' : 'en';
-            // Update UI text (translations omitted for brevity - same as before)
         }
     </script>
 </body>
+
 </html>
